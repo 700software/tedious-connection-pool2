@@ -8,7 +8,9 @@ A connection pool for [tedious](http://github.com/tediousjs/tedious).
 ## Installation
 
     npm install tedious-connection-pool2
-    
+
+  Note: You also need to install a supported version of Tedious in your project as Tedious is defined as a peer dependency here.    
+  tedious>=8.3.0 is currently supported.
 ## Description
 The only difference from the regular tedious API is how the connection is obtained and released. Rather than creating a connection and then closing it when finished, acquire a connection from the pool and release it when finished. Releasing resets the connection and makes in available for another use.
 
@@ -18,7 +20,6 @@ Once the Tedious Connection object has been acquired, the tedious API can be use
 
 ```javascript
 var ConnectionPool = require('tedious-connection-pool2');
-ConnectionPool.overrideTedious(require('tedious'));
 var Request = require('tedious').Request;
 
 var poolConfig = {
@@ -28,9 +29,15 @@ var poolConfig = {
 };
 
 var connectionConfig = {
-    userName: 'login',
-    password: 'password',
-    server: 'localhost'
+    server: 'localhost',
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'login',
+            password: 'password'
+        }
+    }
+   
 };
 
 //create the pool
@@ -76,9 +83,6 @@ pool.drain();
 
 ## Class: ConnectionPool
 
-### ConnectionPool.overrideTedious(tedious)
-Create connections using specified tedious module rather than ConnectionPool's default version of tedious.
-
 ### new ConnectionPool(poolConfig, connectionConfig)
 
 * `poolConfig` {Object} the pool configuration object
@@ -99,9 +103,9 @@ Acquire a Tedious Connection object from the pool.
   * `err` {Object} An Error object is an error occurred trying to acquire a connection, otherwise null.
   * `connection` {Object} A [Connection](https://tediousjs.github.io/tedious/api-connection.html)
 
-### connectionPool.drain(callback)
+### connectionPool.drain()
 Close all pooled connections and stop making new ones. The pool should be discarded after it has been drained.
- * `callback()` {Function} Callback function
+Returns a promise that resolves when the pool has drained.
 
 ### connectionPool.error {event}
 The 'error' event is emitted when a connection fails to connect to the SQL Server. The pool will simply retry indefinitely. The application may want to handle errors in a more nuanced way.

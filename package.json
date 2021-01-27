@@ -29,17 +29,21 @@
       "email": "mike.pilsbury@gmail.com"
     },
     {
+      "name": "Chris Heath",
+      "email": "cheath@spectrumsi.com"
+    },
+    {
       "name": "Bryan Field",
       "email": "bfield@700software.com"
     }
   ],
   "license": "MIT",
-  "dependencies": {
-    "tedious": "^1.14.0"
+  "peerDependencies": {
+    "tedious": ">=8.3.0"
   },
   "devDependencies": {
-    "mocha": "^3.0.2",
-    "simple-statistics": "^2.1.0"
+    "mocha": "^8.2.1",
+    "simple-statistics": "^7.4.0"
   },
   "readmeFilename": "README.md",
   "bugs": {
